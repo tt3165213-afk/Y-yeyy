@@ -1,0 +1,327 @@
+-- ✅ MẪU CHUẨN CHO NGƯỜI MỚI | TÉO HUB 🍎
+-- Giữ nguyên giao diện thật, chỉ thêm hướng dẫn 👈 ngay bên cạnh dòng cần sửa
+
+repeat task.wait() until game:IsLoaded()
+
+-- 🟢 Nút mở menu chính
+local ScreenGui = Instance.new("ScreenGui")
+local ImageButton = Instance.new("ImageButton")
+local UICorner = Instance.new("UICorner")
+
+ScreenGui.Parent = game.CoreGui
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+ImageButton.Parent = ScreenGui
+ImageButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+ImageButton.BorderSizePixel = 0
+ImageButton.Position = UDim2.new(0.10615778, 0, 0.16217947, 0)
+ImageButton.Size = UDim2.new(0, 40, 0, 40)
+ImageButton.Draggable = true
+ImageButton.Image = "http://www.roblox.com/asset/?id=15059956542"  -- 👈 đổi ID ảnh nút mở menu tại đây (ảnh roblox)
+
+UICorner.CornerRadius = UDim.new(1, 10)
+UICorner.Parent = ImageButton
+
+ImageButton.MouseButton1Down:Connect(function()
+	game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.End, false, game)
+end)
+
+-- 🟣 Giao diện Fluent
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+repeat wait() until game:IsLoaded()
+
+-- 🪟 Cửa sổ chính
+local Window = Fluent:CreateWindow({
+	Title = "Linhthuydanhbo PVP=}",         -- 👈 đổi thành tên script của bạn
+	SubTitle = "💎",              -- 👈 đổi mô tả phụ
+	TabWidth = 157,
+	Size = UDim2.fromOffset(450, 300),
+	Acrylic = true,
+	Theme = "Amethyst",                   -- 👈 đổi màu chủ đạo: Amethyst, Dark, Aqua, Light,...
+	MinimizeKey = Enum.KeyCode.End
+})
+
+-- 📑 Các tab (mục chính)
+local Tabs = {
+	Main0 = Window:AddTab({ Title = "một số kênh🤓" }),  -- 👈 đổi tên tab 1
+	Main1 = Window:AddTab({ Title = "Linhthuydanhbo PVP" }),  -- 👈 đổi tên tab 2
+	Main2 = Window:AddTab({ Title = "chống mù" }),     -- 👈 đổi tên tab 3
+	Main3 = Window:AddTab({ Title = "fixxlag" }),        -- 👈 đổi tên tab 4
+	Main4 = Window:AddTab({ Title = " kill aura" }),    -- 👈 đổi tên tab 5
+
+
+
+------------------------------------------------
+-- TAB 1: Ví dụ thêm script
+------------------------------------------------
+Tabs.Main1:AddButton({
+	Title = "Linhthuydanhbo PVP",                             -- 👈 tên nút hiển thị
+	Description = "Chibomaydan",-- 👈 mô tả
+	Callback = function()
+		local Settings = {
+			JoinTeam = "Pirates";   -- 👈 team mặc định: Pirates hoặc Marines
+			Translator = true;      -- 👈 bật dịch sang tiếng Việt nếu có
+		}
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/vesaulotxac9-collab/primevipp/refs/heads/main/cdvn"))()
+
+Tabs.Main2:AddButton({
+	Title = "ESP ",                             -- 👈 tên nút hiển thị
+	Description = "chống mù",-- 👈 mô tả
+	Callback = function()
+		local Settings = {
+			JoinTeam = "Pirates";   -- 👈 team mặc định: Pirates hoặc Marines
+			Translator = true;      -- 👈 bật dịch sang tiếng Việt nếu có
+		}
+		if not game:IsLoaded() then game.Loaded:Wait() end
+
+local Players = game:GetService("Players")
+local Camera = workspace.CurrentCamera
+local LocalPlayer = Players.LocalPlayer
+local CoreGui = game:GetService("CoreGui")
+
+-- ================= CẤU HÌNH CÀI ĐẶT =================
+local COLOR_GREEN = Color3.fromRGB(0, 255, 0)
+local COLOR_RED = Color3.fromRGB(255, 0, 0)
+local BOX_HITBOX_SIZE = Vector3.new(2.3, 2.3, 2.3) -- Kích thước khối vuông
+local ORIGINAL_HITBOX_SIZE = Vector3.new(2, 2, 1)    -- Kích thước gốc của Roblox
+
+_G.HackEnabled = true -- Trạng thái mặc định khi vừa bật script (true = BẬT, false = TẮT)
+-- ===================================================
+
+-- 1. TẠO NÚT BẬT/TẮT (TOGGLE BUTTON) TRÊN MÀN HÌNH
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "Delta_Toggle_ESP"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = CoreGui
+
+local ToggleButton = Instance.new("TextButton")
+ToggleButton.Size = UDim2.new(0, 60, 0, 30) -- Kích thước nút nhỏ gọn
+ToggleButton.Position = UDim2.new(0, 10, 0, 150) -- Vị trí góc bên trái màn hình (có thể tự kéo đi nếu muốn)
+ToggleButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+ToggleButton.BorderSizePixel = 2
+ToggleButton.BorderColor3 = COLOR_GREEN
+ToggleButton.Text = "ESP: ON"
+ToggleButton.TextColor3 = COLOR_GREEN
+ToggleButton.TextSize = 12
+ToggleButton.Font = Enum.Font.SourceSansBold
+ToggleButton.Parent = ScreenGui
+
+-- Làm cho nút có thể kéo di chuyển được trên màn hình cảm ứng
+ToggleButton.Active = true
+ToggleButton.Draggable = true
+
+-- 2. HÀM QUẢN LÝ VŨ KHÍ
+local function setupWeaponHitbox(tool)
+    if not tool:IsA("Tool") then return end
+    local handle = tool:WaitForChild("Handle", 2) or tool:FindFirstChildWhichIsA("BasePart")
+    if handle and handle:IsA("BasePart") then
+        if _G.HackEnabled then
+            handle.Color = COLOR_GREEN
+            handle.Transparency = 0.4 
+            handle.Material = Enum.Material.ForceField
+        else
+            handle.Transparency = 0 -- Trả về độ trong suốt mặc định
+            handle.Material = Enum.Material.Plastic
+        end
+    end
+end
+
+-- 3. HÀM QUẢN LÝ HITBOX NGƯỜI
+local function applyHitbox(character)
+    local hrp = character:WaitForChild("HumanoidRootPart", 10)
+    if hrp and hrp:IsA("BasePart") then
+        if _G.HackEnabled then
+            hrp.Size = BOX_HITBOX_SIZE
+            hrp.Color = COLOR_GREEN
+            hrp.Transparency = 0.5
+            hrp.Material = Enum.Material.ForceField
+            hrp.CanCollide = false
+        else
+            hrp.Size = ORIGINAL_HITBOX_SIZE
+            hrp.Transparency = 1 -- Ẩn khối vuông đi khi tắt
+            hrp.Material = Enum.Material.Plastic
+        end
+    end
+end
+
+-- Xử lý cho bản thân
+local function setupLocalPlayer()
+    local function onChar(character)
+        applyHitbox(character)
+        character.ChildAdded:Connect(setupWeaponHitbox)
+        local currentTool = character:FindFirstChildOfClass("Tool")
+        if currentTool then setupWeaponHitbox(currentTool) end
+    end
+    LocalPlayer.CharacterAdded:Connect(onChar)
+    if LocalPlayer.Character then onChar(LocalPlayer.Character) end
+end
+
+-- 4. HÀM XỬ LÝ ĐỊCH & DRAWING ESP
+local function applyEnemyHack(player)
+    if player == LocalPlayer then return end
+
+    local box = Drawing.new("Square")
+    box.Visible = false
+    box.Color = COLOR_GREEN
+    box.Thickness = 1.5
+    box.Filled = false
+
+    local text = Drawing.new("Text")
+    text.Visible = false
+    text.Color = COLOR_GREEN
+    text.Size = 14
+    text.Center = true
+    text.Outline = true
+    text.OutlineColor = Color3.fromRGB(0, 0, 0)
+
+    local connection
+    connection = game:GetService("RunService").RenderStepped:Connect(function()
+        if not player or not player.Parent or not player.Character then
+            box.Visible = false
+            text.Visible = false
+            if not player.Parent then
+                box:Remove()
+                text:Remove()
+                connection:Disconnect()
+            end
+            return
+        end
+
+        local character = player.Character
+        local hrp = character:FindFirstChild("HumanoidRootPart")
+        local head = character:FindFirstChild("Head")
+
+        if hrp and head and _G.HackEnabled then
+            -- Khi bật hack: Cập nhật liên tục kích thước và ESP
+            if hrp.Size ~= BOX_HITBOX_SIZE then applyHitbox(character) end
+            
+            local holdingWeapon = character:FindFirstChildOfClass("Tool")
+            if holdingWeapon then setupWeaponHitbox(holdingWeapon) end
+
+            local hrpPosition, isOnScreen = Camera:WorldToViewportPoint(hrp.Position)
+            if isOnScreen then
+                local headPosition = Camera:WorldToViewportPoint(head.Position + Vector3.new(0, 0.5, 0))
+                local legPosition = Camera:WorldToViewportPoint(hrp.Position - Vector3.new(0, 3, 0))
+                local height = math.abs(headPosition.Y - legPosition.Y)
+                local width = height / 1.5
+
+                box.Size = Vector2.new(width, height)
+                box.Position = Vector2.new(hrpPosition.X - width / 2, hrpPosition.Y - height / 2)
+                box.Visible = true
+
+                local weaponName = holdingWeapon and holdingWeapon.Name or "Tay Không"
+                text.Text = "[ " .. weaponName .. " ]"
+                text.Position = Vector2.new(hrpPosition.X, hrpPosition.Y + (height / 2) + 5)
+                text.Visible = true
+            else
+                box.Visible = false
+                text.Visible = false
+            end
+        else
+            -- Khi tắt hoặc không hồi sinh: Ẩn toàn bộ ESP
+            box.Visible = false
+            text.Visible = false
+            if hrp and hrp.Size == BOX_HITBOX_SIZE then applyHitbox(character) end
+        end
+    end)
+end
+
+-- Khởi động hệ thống ban đầu
+setupLocalPlayer()
+for _, player in ipairs(Players:GetPlayers()) do applyEnemyHack(player) end
+Players.PlayerAdded:Connect(applyEnemyHack)
+
+-- 5. SỰ KIỆN CLICK NÚT BẬT / TẮT
+ToggleButton.MouseButton1Click:Connect(function()
+    _G.HackEnabled = not _G.HackEnabled
+    
+    if _G.HackEnabled then
+        ToggleButton.Text = "ESP: ON"
+        ToggleButton.TextColor3 = COLOR_GREEN
+        ToggleButton.BorderColor3 = COLOR_GREEN
+    else
+        ToggleButton.Text = "ESP: OFF"
+        ToggleButton.TextColor3 = COLOR_RED
+        ToggleButton.BorderColor3 = COLOR_RED
+        
+        -- Reset ngay lập tức hitbox của bản thân khi vừa ấn tắt
+        if LocalPlayer.Character then applyHitbox(LocalPlayer.Character) end
+    end
+end)
+Tabs.Main3:AddButton({
+	Title = "fixxlagg",                             -- 👈 tên nút hiển thị
+	Description = "Chibomaydan",-- 👈 mô tả
+	Callback = function()
+		local Settings = {
+			JoinTeam = "Pirates";   -- 👈 team mặc định: Pirates hoặc Marines
+			Translator = true;      -- 👈 bật dịch sang tiếng Việt nếu có
+		}
+		if not game:IsLoaded() then game.Loaded:Wait() end
+
+local workspace = game:GetService("Workspace")
+local lighting = game:GetService("Lighting")
+local terrain = workspace:FindFirstChildOfClass("Terrain")
+
+-- 1. CẤU HÌNH ĐỒ HỌA 1x1 VÀ LÀM TRƠN BỀ MẶT
+if terrain then
+    terrain.WaterWaveSize = 0
+    terrain.WaterWaveSpeed = 0
+    terrain.WaterReflectance = 0
+    terrain.WaterTransparency = 0
+end
+
+-- Thay đổi thuộc tính của các vật thể vật lý thành màu trơn, phẳng
+local function fixLagObject(obj)
+    if obj:IsA("BasePart") and not obj:IsA("MeshPart") then
+        obj.Material = Enum.Material.SmoothPlastic
+        obj.Reflectance = 0
+    elseif obj:IsA("Texture") or obj:IsA("Decal") then
+        -- Ép các hình ảnh bề mặt về kích thước tối thiểu bằng cách đổi ID trống hoặc xóa để game tự render 1x1
+        obj.Texture = "" 
+    elseif obj:IsA("MeshPart") then
+        obj.Material = Enum.Material.SmoothPlastic
+        obj.Reflectance = 0
+    end
+
+    -- 2. XÓA CÁC HIỆU ỨNG HẠT VÀ ÁNH SÁNG PHỨC TẠP TRÊN VẬT THỂ
+    if obj:IsA("ParticleEmitter") or obj:IsA("Trail") or obj:IsA("Smoke") or obj:IsA("Fire") or obj:IsA("Sparkles") then
+        obj.Enabled = false
+    end
+end
+
+-- Quét toàn bộ vật thể đang có sẵn trong game
+for _, obj in ipairs(workspace:GetDescendants()) do
+    fixLagObject(obj)
+end
+
+-- Tự động quét và xử lý các vật thể mới xuất hiện (Ví dụ chiêu thức mới tung ra)
+workspace.DescendantAdded:Connect(fixLagObject)
+
+-- 3. TỐI ƯU HÓA ÁNH SÁNG VÀ XÓA HIỆU ỨNG MÔI TRƯỜNG (LIGHTING)
+lighting.GlobalShadows = false -- Tắt đổ bóng toàn cục
+lighting.FogStart = 0
+lighting.FogEnd = 999999 -- Xóa sương mù nhìn xa hơn và đỡ lag
+lighting.ShadowMapBlur = 0
+
+-- Xóa các hiệu ứng lọc màu, nhòe hình, tia sáng mặt trời
+local function clearLightingEffects()
+    for _, effect in ipairs(lighting:GetChildren()) do
+        if effect:IsA("BloomEffect") or effect:IsA("BlurEffect") or effect:IsA("ColorCorrectionEffect") or effect:IsA("SunRaysEffect") or effect:IsA("DepthOfFieldEffect") then
+            effect.Enabled = false
+        end
+    end
+end
+
+clearLightingEffects()
+lighting.ChildAdded:Connect(clearLightingEffects)
+
+print("--- ĐÃ TỐI ƯU HOÁ ĐỒ HỌA 1X1 VÀ FIX LAG THÀNH CÔNG ---")
+Tabs.Main4:AddButton({
+	Title = "kill aura",                             -- 👈 tên nút hiển thị
+	Description = "Chibomaydan",-- 👈 mô tả
+	Callback = function()
+		local Settings = {
+			JoinTeam = "Pirates";   -- 👈 team mặc định: Pirates hoặc Marines
+			Translator = true;      -- 👈 bật dịch sang tiếng Việt nếu có
+		}
+		loadstring(game:HttpGet('https://raw.githubusercontent.com/amdzy088/Kill-aura-slect-universal/refs/heads/main/Kill%20aura%20select%20universal'))() 
